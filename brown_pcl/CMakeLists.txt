@@ -1,11 +1,9 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(bt_pc_segmentation)
+project(brown_pcl)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-set(PCL_DIR "/usr/local/share/pcl-1.8/PCLConfig.cmake")
-find_package(PCL 1.8 REQUIRED)
 
 ##  pcl_ros
 ##  pcl_conversions
@@ -18,6 +16,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS thread)
 
+#set(PCL_DIR "/usr/local/share/pcl-1.8/PCLConfig.cmake")
+find_package(PCL 1.8 REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -86,7 +86,7 @@ find_package(Boost REQUIRED COMPONENTS thread)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
    INCLUDE_DIRS include
-   #	LIBRARIES bt_pc_segmentation
+   #	LIBRARIES brown_pcl
    # 	CATKIN_DEPENDS pcl_ros pcl_conversions roscpp sensor_msgs
    #	DEPENDS system_lib
 )
@@ -104,10 +104,8 @@ include_directories(
   ${PCL_INCLUDE_DIRS}
 )
 
-add_definitions(${PCL_DEFINITIONS})
-
 ## Declare a cpp library
-add_library(bt_pc_segmentation
+add_library(brown_pcl
   src/icp.cpp
   src/icpPointToPlane.cpp
   src/icpPointToPoint.cpp
@@ -115,35 +113,32 @@ add_library(bt_pc_segmentation
   src/matrix.cpp
 )
 
-link_directories(${PCL_LIBRARY_DIRS})
-
 ## Declare a cpp executable
-# add_executable(bt_pc_segmentation_node src/bt_pc_segmentation_node.cpp)
-add_executable(example src/example.cpp)
-add_executable(plane src/planar_segmentation.cpp)
-add_executable(extract src/extract_indices.cpp)
-add_executable(visualizer src/pcl_visualizer_demo.cpp)
-add_executable(test src/test.cpp)
-add_executable(icp_run src/icp_run.cpp)
+# add_executable(brown_pcl_node src/brown_pcl_node.cpp)
+add_executable(pc_example src/example.cpp)
+add_executable(pc_plane src/planar_segmentation.cpp)
+add_executable(pc_extract src/extract_indices.cpp)
+add_executable(pc_visualizer src/pcl_visualizer_demo.cpp)
+add_executable(pc_test src/test.cpp)
+add_executable(pc_icp_run src/icp_run.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-# add_dependencies(bt_pc_segmentation_node bt_pc_segmentation_generate_messages_cpp)
+# add_dependencies(brown_pcl_node brown_pcl_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(example ${catkin_LIBRARIES} ${PCL_LIBRARIES})
-target_link_libraries(plane ${catkin_LIBRARIES} ${PCL_LIBRARIES})
-target_link_libraries(extract ${catkin_LIBRARIES} ${PCL_LIBRARIES})
-#target_link_libraries(visualizer ${catkin_LIBRARIES} libvtkCommon.so libvtkFiltering.so libvtkRendering.so libvtkGraphics.so ${PCL_LIBRARIES})
-target_link_libraries(visualizer ${catkin_LIBRARIES} ${PCL_LIBRARIES})
-target_link_libraries(test ${catkin_LIBRARIES} libvtkCommon.so libvtkFiltering.so libvtkRendering.so libvtkGraphics.so ${PCL_LIBRARIES})
+target_link_libraries(pc_example ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+target_link_libraries(pc_plane ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+target_link_libraries(pc_extract ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+target_link_libraries(pc_visualizer ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+target_link_libraries(pc_test ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 
 message(STATUS "PCL_VERSION = ${PCL_VERSION}")
 message(STATUS "PCL_INCLUDE_DIRS = ${PCL_INCLUDE_DIRS}")
 message(STATUS "PCL_LIBRARY_DIRS = ${PCL_LIBRARY_DIRS}")
 message(STATUS "PCL_LIBRARIES = ${PCL_LIBRARIES}")
 
-target_link_libraries(icp_run ${catkin_LIBRARIES} bt_pc_segmentation ${PCL_LIBRARIES})
+target_link_libraries(pc_icp_run ${catkin_LIBRARIES} brown_pcl ${PCL_LIBRARIES})
 
 #############
 ## Install ##
@@ -160,7 +155,7 @@ target_link_libraries(icp_run ${catkin_LIBRARIES} bt_pc_segmentation ${PCL_LIBRA
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS bt_pc_segmentation bt_pc_segmentation_node
+# install(TARGETS brown_pcl brown_pcl_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -185,7 +180,7 @@ target_link_libraries(icp_run ${catkin_LIBRARIES} bt_pc_segmentation ${PCL_LIBRA
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_bt_pc_segmentation.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_brown_pcl.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
